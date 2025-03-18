@@ -31,15 +31,14 @@ export default function ParticleBackground() {
       opacity: number;
       color: string;
 
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+      constructor(canvasWidth: number, canvasHeight: number) {
+        this.x = Math.random() * canvasWidth;
+        this.y = Math.random() * canvasHeight;
         this.size = Math.random() * 1.5 + 0.5;
         this.speedX = Math.random() * 0.2 - 0.1;
         this.speedY = Math.random() * 0.2 - 0.1;
         this.opacity = Math.random() * 0.5 + 0.1;
 
-        // Colors in indigo/purple range
         const colors = ["#6366f1", "#4f46e5", "#7c3aed", "#8b5cf6"];
         this.color = colors[Math.floor(Math.random() * colors.length)];
       }
@@ -48,7 +47,6 @@ export default function ParticleBackground() {
         this.x += this.speedX;
         this.y += this.speedY;
 
-        // Wrap around edges
         if (this.x < 0) this.x = canvas.width;
         if (this.x > canvas.width) this.x = 0;
         if (this.y < 0) this.y = canvas.height;
@@ -73,20 +71,18 @@ export default function ParticleBackground() {
     const particles: Particle[] = [];
 
     for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
+      particles.push(new Particle(canvas.width, canvas.height));
     }
 
     // Animation loop
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw and update particles
       particles.forEach((particle) => {
         particle.update();
         particle.draw();
       });
 
-      // Draw connections
       ctx.globalAlpha = 0.05;
       ctx.strokeStyle = "#6366f1";
       ctx.lineWidth = 0.5;
